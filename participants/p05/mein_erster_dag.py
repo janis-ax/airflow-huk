@@ -4,7 +4,7 @@ from airflow.operators.bash import BashOperator
 
 with DAG(
     dag_id="p05_hello_world",
-    start_date=datetime(2027, 5, 20),
+    start_date=datetime(2026, 5, 20),
     schedule='@hourly',
     catchup=True,
     tags=["workshop", "p05"],
