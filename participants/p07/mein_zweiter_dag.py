@@ -15,20 +15,21 @@ import pendulum
 )
 def mein_zweiter_dag():
 
-    @task(task_id="produce_data", do_xcom_push=True)
+    @task(task_id="produce_data", do_xcom_push=True, pool='workshop_pool')
     def produce_data():
         return {"user": "ish", "score": 42}
 
-    @task(task_id="consume_data", do_xcom_push=True)
-    def consume_data(**context):
-        user = context["ti"].xcom_pull(task_ids="produce_data", key="user")
-        score = context["ti"].xcom_pull(task_ids="produce_data", key="score")
+    @task(task_id="consume_data", do_xcom_push=True, pool='workshop_pool')
+    def consume_data(ti):
+        user = ti.xcom_pull(task_ids="produce_data", key="user")
+        score = ti.xcom_pull(task_ids="produce_data", key="score")
         print(f"User {user} has score {score}")
 
     log_date = BashOperator(
         task_id="log_date",
         bash_command='echo "Run {{ logical_date | ds }}"',
+        pool='workshop_pool'
     )
-    produce_data() >> consume_data() >> log_date()
+    produce_data() >> consume_data() >> log_date
 
 dag = mein_zweiter_dag()

@@ -32,12 +32,6 @@ def mein_erster_dag():
         bash_command="echo 'D'",
         trigger_rule='all_done',
     )
-    A >> B()
-    A >> C
-    [B(), C] >> D
-
-
+    A >> [B(), C] >> D
 
 dag = mein_erster_dag()
-
-
