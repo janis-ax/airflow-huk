@@ -15,24 +15,24 @@ import pendulum
 )
 def mein_erster_dag():
     A = BashOperator(
-        task_id="start_task",
+        task_id="A",
         bash_command="echo 'A'"
     )
 
-    @task(task_id="process_task")
+    @task(task_id="B")
     def B():
         raise Exception
 
     C = BashOperator(
-        task_id="end_task",
+        task_id="C",
         bash_command="echo 'C'"
     )
     D = BashOperator(
-        task_id="end_task",
+        task_id="D",
         bash_command="echo 'D'"
     )
-    A >> B
+    A >> B()
     A >> C
-    [B, C] >> D
+    [B(), C] >> D
 
 dag = mein_erster_dag()
