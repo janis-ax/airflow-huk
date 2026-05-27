@@ -36,4 +36,8 @@ def mein_erster_dag():
     A >> C
     [B(), C] >> D
 
+
+
 dag = mein_erster_dag()
+
+
