@@ -8,7 +8,8 @@ from airflow.operators.bash import BashOperator
 @dag(
     dag_id="p04_schedule_demo_dag",
     start_date=pendulum.now().subtract(days=7),
-    schedule="@hourly",
+    #schedule="@hourly",
+    schedule='30 9 * * 1-5',
     catchup=True,
     tags=["p04"],
 )
