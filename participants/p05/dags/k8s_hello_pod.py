@@ -10,7 +10,7 @@ from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperato
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),
     schedule=None,
     catchup=False,
-    tags=["workshop", "kubernetes", p05],
+    tags=["workshop", "kubernetes", "p05"],
 )
 def p05_k8s_hello_pod():
     KubernetesPodOperator(
