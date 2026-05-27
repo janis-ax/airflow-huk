@@ -15,11 +15,11 @@ import pendulum
 )
 def mein_zweiter_dag():
 
-    @task(task_id="produce_data", do_xcom_push=True)
+    @task(task_id="produce_data")
     def produce_data():
         return {"user": "ish", "score": 42}
 
-    @task(task_id="consume_data", do_xcom_push=True)
+    @task(task_id="consume_data")
     def consume_data(ti):
         user = ti.xcom_pull(task_ids="produce_data", key="user")
         score = ti.xcom_pull(task_ids="produce_data", key="score")
