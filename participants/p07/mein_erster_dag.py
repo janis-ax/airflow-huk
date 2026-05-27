@@ -14,7 +14,7 @@ import pendulum
     tags=["p07", "workshop", "task1"],
 )
 def mein_erster_dag():
-    start_task = BashOperator(
+    start = BashOperator(
         task_id="start_task",
         bash_command="echo 'Start'"
     )
@@ -23,7 +23,7 @@ def mein_erster_dag():
     def process():
         print("Processing...")
 
-    end_task = BashOperator(
+    end = BashOperator(
         task_id="end_task",
         bash_command="echo 'End'"
     )
