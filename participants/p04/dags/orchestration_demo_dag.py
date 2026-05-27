@@ -22,7 +22,7 @@ def orchestration_demo_dag():
     def processB():
         print("Processing B...")
 
-     @task
+    @task
     def processC():
         print("Processing C...")
 
