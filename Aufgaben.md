@@ -42,89 +42,45 @@ start >> process >> end
 ## Aufgabe 3 – Scheduling & Catchup verstehen
 
 **Datei:** `dags/schedule_demo_dag.py`
-**Ziel:** Zusammenspiel von `schedule`, `start_date`, `catchup`.
 
-**Anforderungen:**
+**Teilaufgabe 1: schedule-Presets ausprobieren**
 
-* `dag_id`: `schedule_demo_dag`
-* `start_date`: `2024-01-01` *(timezone-aware)*
-* `schedule`: `@daily`
-* `catchup`: `True`
+* Setze `schedule='@hourly'`, `start_date` = 7 Tage in der Vergangenheit, `catchup=False`
+* Aktiviere den DAG und beobachte: Wie viele Runs werden erzeugt?
 
-**Task:**
+**Teilaufgabe 2: catchup=True testen**
 
-* `show_ds` (BashOperator)
+* Ändere `catchup` auf `True` und reaktiviere den DAG
+* Beobachte im Grid View: Wie viele historische Runs werden nachgeholt?
 
-  ```bash
-  echo "Logical date is {{ logical_date | ds }}"
-  ```
+**Teilaufgabe 3: Cron-Ausdruck einsetzen**
 
-**Schritte:**
-
-* Deployen
-* Runs prüfen (`catchup=True` erzeugt Backfills)
-* `logical_date` vs “run time” vergleichen
-* Dann `catchup=False` setzen und Verhalten vergleichen
-
-⚠️ Hinweis fürs Workshop-Cluster: Wenn `start_date` sehr weit zurückliegt, erzeugt `catchup=True` sehr viele Runs.
+* Setze `schedule='30 9 * * 1-5'` (Werktags um 09:30)
+* Tipp: [crontab.guru](https://crontab.guru) zum Testen von Cron-Ausdrücken
 
 ---
 
-## Aufgabe 4 – Orchestration / Trigger Rules
+## Aufgabe 4 – Fan-In mit Trigger Rule
 
 **Datei:** `dags/orchestration_demo_dag.py`
-**Ziel:** Fan-Out, Fan-In, Trigger Rules üben.
 
-**Anforderungen:**
-
-* `dag_id`: `orchestration_demo_dag`
-* `schedule`: `@daily`
-* `catchup`: `False`
-
-**Tasks:**
-
-* `start` (BashOperator)
-* `branch_a` (Python/TaskFlow, immer success)
-* `branch_b` (Python/TaskFlow, random Fehler)
-* `join` (BashOperator, Trigger Rule: `all_success`)
-* `notify_failure` (BashOperator, Trigger Rule: `one_failed`)
-
-**Dependencies:**
-
-```python
-start >> [branch_a, branch_b]
-[branch_a, branch_b] >> join
-[branch_a, branch_b] >> notify_failure
-```
-
----
-
-## Aufgabe 5 – Pools & Concurrency (begrenzen)
-
-**Datei:** `dags/pool_demo_dag.py`
-**Ziel:** Parallelität via Pool Slots steuern.
-
-**Anforderungen:**
-
-* `dag_id`: `pool_demo_dag`
-* `schedule`: `@daily`
-* `catchup`: `False`
-
-**Tasks:**
-
-* `start` (Bash)
-* `worker_1`…`worker_5` (Bash, alle `pool="workshop_pool"`)
-
-**Dependencies:**
-
-```python
-start >> [worker_1, worker_2, worker_3, worker_4, worker_5]
-```
+**Struktur:** `A → B`, `A → C`, `[B, C] → D`
 
 **Schritte:**
 
-* Pool `workshop_pool` in UI anlegen
-* Slot-Anzahl variieren und beobachten (Gantt/Grid)
+* Setze für Task D: `trigger_rule='all_done'`
+* Simuliere Fehler in Task B (`raise Exception`)
+* Beobachte: Läuft Task D trotzdem durch?
+
+---
+
+## Aufgabe 5 – Pool anlegen und nutzen
+
+**Schritte:**
+
+* In der UI: Admin → Pools → Pool `workshop_pool` mit 2 Slots anlegen
+* Weise 3 Tasks dem Pool zu: `pool='workshop_pool'`
+* Beobachte im Gantt/Grid: Laufen wirklich maximal 2 Tasks gleichzeitig?
 
 ---
 
@@ -356,4 +312,3 @@ start >> [chunk_1, chunk_2, chunk_3] >> finish
 *(Optional Bonus später: Dynamic Task Mapping für beliebig viele Chunks.)*
 
 ---
-
