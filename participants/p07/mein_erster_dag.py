@@ -14,13 +14,13 @@ with DAG(
  ) as dag:
     start_task = BashOperator(
         task_id="start_task",
-        bash_command='echo "Start"'
+        bash_command="echo 'Start'"
     )
 
     # process_task = process()
 
     end_task = BashOperator(
         task_id="end_task",
-        bash_command='echo "End"'
+        bash_command="echo 'End'"
     )
      
