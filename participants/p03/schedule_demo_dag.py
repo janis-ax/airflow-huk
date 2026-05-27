@@ -5,7 +5,7 @@ from airflow.providers.standard.operators.bash import BashOperator
 
 with DAG(
     dag_id="p03_demo_dag",
-    start_date=pendulum.now(tz="UTC").subract(days=7),
+    start_date=pendulum.now(tz="UTC").subtract(days=7),
     schedule='@hourly',
     catchup=False,
     tags=['p03']
