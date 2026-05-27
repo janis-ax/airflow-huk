@@ -16,11 +16,9 @@ def p06_k8s_hello_pod():
     KubernetesPodOperator(
         task_id="hello_pod",
         name="hello-pod",
-        image="alpine:3.18",
-        cmds=["/bin/sh", "-c"],
-        arguments=[
-            'echo "Hello from Kubernetes Pod – {{ ds }}" && sleep 5',
-        ],
+        image="python:3.11-slim",
+        cmds=["python", "-c"],
+        arguments=["import os; print(os.environ['ENV'])"],
         # Stackable: Airflow läuft selbst im Cluster -> ServiceAccount-Token reicht,
         # keine eigene kubeconfig nötig.
         in_cluster=True,
@@ -30,6 +28,10 @@ def p06_k8s_hello_pod():
         on_finish_action="delete_succeeded_pod",
         get_logs=True,
         log_events_on_failure=True,
+        env_vars={
+            "ENV": "hello_prod",
+            "RUN_DATE": "{{ logical_date | ds }}"
+        },
     )
 
 
