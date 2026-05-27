@@ -8,6 +8,8 @@ with DAG(
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),
     schedule="@hourly",
     catchup=False,
+    tags=['p03']
+
 ) as dag:
     BashOperator(
         task_id="say_hello",
