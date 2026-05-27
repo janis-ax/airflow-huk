@@ -17,7 +17,7 @@ with DAG(
     )
     B=BashOperator(
         task_id="b",
-        bash_command='echo "Hello p03!"',
+        bash_command='exit 1',
     )
     C=BashOperator(
         task_id="c",
