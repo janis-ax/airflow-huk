@@ -28,4 +28,6 @@ def mein_erster_dag():
         print("Pipeline complete")
 
     print_hello() >> show_date >> final_step()
+
+dag = mein_erster_dag()
     
