@@ -1,12 +1,14 @@
 from airflow import DAG
 from airflow.operators.bash import BashOperator
+from datetime import datetime
+
 
 @task(task_id="process_task")
 def process():
     print("Processing...")
 
 with DAG(
-     dag_id="mein_erster_dag",
+     dag_id="p07_mein_erster_dag",
      start_date=datetime.datetime(2024, 1, 1),
      schedule="@daily",
      catchup=False,
