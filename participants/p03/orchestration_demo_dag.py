@@ -25,7 +25,7 @@ with DAG(
     )
     D=BashOperator(
         task_id="d",
-        bash_command='exit 1',
+        bash_command='echo "Hello p03!"',
         trigger_rule='all_done'
     )
     A >> B
