@@ -25,7 +25,7 @@ def janis_k8s_hello_pod():
         # keine eigene kubeconfig nötig.
         in_cluster=True,
         # Pod im selben Namespace wie der Airflow-Worker starten.
-        namespace="{{ macros.os.environ.get('POD_NAMESPACE', 'airflow') }}",
+        namespace='airflow',
         # Pod nach erfolgreichem Lauf wegräumen, bei Fehler stehen lassen zum Debuggen.
         on_finish_action="delete_succeeded_pod",
         get_logs=True,
