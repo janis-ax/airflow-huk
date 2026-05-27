@@ -6,7 +6,7 @@ from airflow.providers.standard.operators.bash import BashOperator
 with DAG(
     dag_id="p03_hello_world",
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),
-    schedule="@hourly",
+    schedule=None,
     catchup=False,
     tags=['p03']
 
