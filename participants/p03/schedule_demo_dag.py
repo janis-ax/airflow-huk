@@ -7,7 +7,7 @@ with DAG(
     dag_id="p03_demo_dag",
     start_date=pendulum.now(tz="UTC").subtract(days=7),
     schedule='@hourly',
-    catchup=False,
+    catchup=True,
     tags=['p03']
 
 ) as dag:
