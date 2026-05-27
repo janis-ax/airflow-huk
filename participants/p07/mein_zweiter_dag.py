@@ -20,11 +20,11 @@ def mein_zweiter_dag():
         return {"user": "ish", "score": 42}
 
     @task(task_id="consume_data")
-    def consume_data(ti):
+    def consume_data(data):
         print('Test')
-        print(ti)
-        user = ti.xcom_pull(task_ids="produce_data", key="user")
-        score = ti.xcom_pull(task_ids="produce_data", key="score")
+        print(data)
+        user = data["user"]
+        score = data["score"]
         print(f"User {user} has score {score}")
 
     log_date = BashOperator(
