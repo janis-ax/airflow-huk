@@ -9,17 +9,17 @@ import pendulum
 @dag(
     dag_id="p07_mein_zweiter_dag",
     start_date=pendulum.datetime(2026, 5, 20, tz="UTC"),  # timezone-aware
-    schedule="@hourly",
-    catchup=True,
+    schedule="@once",
+    catchup=False,
     tags=["p07", "workshop", "task2"],
 )
 def mein_zweiter_dag():
 
-    @task(task_id="produce_data", do_xcom_push=True, pool='workshop_pool')
+    @task(task_id="produce_data", do_xcom_push=True)
     def produce_data():
         return {"user": "ish", "score": 42}
 
-    @task(task_id="consume_data", do_xcom_push=True, pool='workshop_pool')
+    @task(task_id="consume_data", do_xcom_push=True)
     def consume_data(ti):
         user = ti.xcom_pull(task_ids="produce_data", key="user")
         score = ti.xcom_pull(task_ids="produce_data", key="score")
