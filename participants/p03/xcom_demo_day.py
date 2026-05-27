@@ -11,7 +11,7 @@ with DAG(
     tags=['p03']
 
 ) as dag:
-    @task
+    @task(do_xcom_push=True)
     def produce_data():
         return {'user': 'ish', 'score': 42}
     @task
@@ -20,6 +20,6 @@ with DAG(
 
     @task
     def log_date():
-        return BashOperator(task_id='log_date', bash_command='echo "Run {{logical_date | ds }}"')
+        BashOperator(task_id='log_date', bash_command='echo "Run {{logical_date | ds }}"')
 
     produce_data >> consume_data >> log_date
