@@ -18,8 +18,13 @@ def mein_erster_dag():
     def print_hello():
         print("Hello Airflow")
 
-    show_date = BashOperator(
-        task_id="show_date",
+    show_dateB = BashOperator(
+        task_id="show_dateB",
+        bash_command='echo "Logical execution date is {{ ds }}"',
+    )
+
+    show_dateC = BashOperator(
+        task_id="show_dateC",
         bash_command='echo "Logical execution date is {{ ds }}"',
     )
 
@@ -27,7 +32,7 @@ def mein_erster_dag():
     def final_step():
         print("Pipeline complete")
 
-    print_hello() >> show_date >> final_step()
+    print_hello() >>[ show_dateB, show_dateC ]>> final_step()
 
 dag = mein_erster_dag()
     
