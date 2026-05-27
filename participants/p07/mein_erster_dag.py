@@ -8,25 +8,31 @@ import pendulum
 
 @dag(
     dag_id="p07_mein_erster_dag",
-    start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),  # timezone-aware
-    schedule="@daily",
+    start_date=pendulum.datetime(2026, 5, 20, tz="UTC"),  # timezone-aware
+    schedule="@hourly",
     catchup=False,
     tags=["p07", "workshop", "task1"],
 )
 def mein_erster_dag():
-    start = BashOperator(
+    A = BashOperator(
         task_id="start_task",
-        bash_command="echo 'Start'"
+        bash_command="echo 'A'"
     )
 
     @task(task_id="process_task")
-    def process():
-        print("Processing...")
+    def B():
+        raise Exception
 
-    end = BashOperator(
+    C = BashOperator(
         task_id="end_task",
-        bash_command="echo 'End'"
+        bash_command="echo 'C'"
     )
-    start >> process() >> end
+    D = BashOperator(
+        task_id="end_task",
+        bash_command="echo 'D'"
+    )
+    A >> B
+    A >> C
+    [B, C] >> D
 
 dag = mein_erster_dag()
