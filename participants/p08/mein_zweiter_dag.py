@@ -9,7 +9,7 @@ from airflow.operators.bash import BashOperator
     dag_id="p08_02_hello_world",
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),  # timezone-aware
     schedule="@daily",
-    catchup=False,
+    catchup=True,
     tags=["workshop", "p08"],
 )
 def mein_erster_dag():
