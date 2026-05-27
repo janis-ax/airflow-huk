@@ -9,7 +9,8 @@ with DAG(
      dag_id="mein_erster_dag",
      start_date=datetime.datetime(2024, 1, 1),
      schedule="@daily",
-     catchup=False
+     catchup=False,
+     tags=["workshop", "p07"],
  ) as dag:
     start_task = BashOperator(
         task_id="start_task",
