@@ -19,7 +19,7 @@ def p05_k8s_hello_pod():
         image="alpine:3.18",
         cmds=["/bin/sh", "-c"],
         arguments=[
-            'echo "Hello from Kubernetes Pod – {{ ds }}" && sleep 5',
+            'echo "Hello from Kubernetes p05 Pod – {{ ds }}" && sleep 5',
         ],
         # Stackable: Airflow läuft selbst im Cluster -> ServiceAccount-Token reicht,
         # keine eigene kubeconfig nötig.
