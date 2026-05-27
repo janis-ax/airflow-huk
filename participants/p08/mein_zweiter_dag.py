@@ -7,7 +7,7 @@ from airflow.operators.bash import BashOperator
 
 @dag(
     dag_id="p08_02_hello_world",
-    start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),  # timezone-aware
+    start_date=pendulum.datetime(2026, 5, 20, tz="UTC"),  # timezone-aware
     schedule="@daily",
     catchup=True,
     tags=["workshop", "p08"],
