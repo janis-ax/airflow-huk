@@ -30,7 +30,7 @@ def mein_erster_dag():
     D = BashOperator(
         task_id="D",
         bash_command="echo 'D'",
-        trugger_rule='all_done',
+        trigger_rule='all_done',
     )
     A >> B()
     A >> C
