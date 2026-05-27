@@ -47,6 +47,7 @@ start >> process >> end
 
 * Setze `schedule='@hourly'`, `start_date` = 7 Tage in der Vergangenheit, `catchup=False`
 * Aktiviere den DAG und beobachte: Wie viele Runs werden erzeugt?
+1x
 
 **Teilaufgabe 2: catchup=True testen**
 
