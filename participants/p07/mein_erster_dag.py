@@ -31,8 +31,8 @@ def mein_erster_dag():
         task_id="D",
         bash_command="echo 'D'"
     )
-    A >> B
+    A >> B()
     A >> C
-    [B, C] >> D
+    [B(), C] >> D
 
 dag = mein_erster_dag()
