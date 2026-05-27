@@ -10,7 +10,7 @@ from janis.libs.calculator import add, subtract, multiply, divide
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),  # timezone-aware
     schedule="@daily",
     catchup=False,
-    tags=["workshop", "basics"],
+    tags=["workshop", "basics", "p05"],
 )
 def mein_erster_dag():
     @task
