@@ -1,26 +1,39 @@
-from airflow.sdk import DAG
-from airflow.providers.standard.operators.bash import BashOperator
+from airflow import DAG
+from airflow.decorators import dag, task
+from airflow.operators.bash import BashOperator
+import pendulum
 
-@task(task_id="process_task")
-def process():
-    print("Processing...")
 
-with DAG(
-     dag_id="mein_erster_dag",
-     start_date=datetime.datetime(2024, 1, 1),
-     schedule="@daily",
-     catchup=False,
-     tags=["workshop", "p07"],
- ) as dag:
-    start_task = BashOperator(
-        task_id="start_task",
-        bash_command='echo "Start"'
+
+
+@dag(
+    dag_id="p07_mein_erster_dag",
+    start_date=pendulum.datetime(2026, 5, 20, tz="UTC"),  # timezone-aware
+    schedule="@hourly",
+    catchup=False,
+    tags=["p07", "workshop", "task1"],
+)
+def mein_erster_dag():
+    A = BashOperator(
+        task_id="A",
+        bash_command="echo 'A'"
     )
 
-    process_task = process()
+    @task(task_id="B")
+    def B():
+        raise Exception
 
-    end_task = BashOperator(
-        task_id="end_task",
-        bash_command='echo "End"'
+    C = BashOperator(
+        task_id="C",
+        bash_command="echo 'C'"
     )
-     
+    D = BashOperator(
+        task_id="D",
+        bash_command="echo 'D'",
+        trugger_rule='all_done',
+    )
+    A >> B()
+    A >> C
+    [B(), C] >> D
+
+dag = mein_erster_dag()

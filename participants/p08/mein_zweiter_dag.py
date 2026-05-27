@@ -5,13 +5,12 @@ from airflow.decorators import dag, task
 from airflow.operators.bash import BashOperator
 
 
-
 @dag(
-    dag_id="p06_hello_world",
+    dag_id="p08_02_hello_world",
     start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),  # timezone-aware
     schedule="@daily",
     catchup=False,
-    tags=["workshop", "p06","leif"],
+    tags=["workshop", "p08"],
 )
 def mein_erster_dag():
     @task
@@ -29,5 +28,5 @@ def mein_erster_dag():
 
     print_hello() >> show_date >> final_step()
 
+
 dag = mein_erster_dag()
-    

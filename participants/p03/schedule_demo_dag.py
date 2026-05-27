@@ -4,10 +4,10 @@ from airflow.providers.standard.operators.bash import BashOperator
 
 
 with DAG(
-    dag_id="p03_hello_world",
-    start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),
-    schedule=None,
-    catchup=False,
+    dag_id="p03_demo_dag",
+    start_date=pendulum.now(tz="UTC").subtract(days=7),
+    schedule='30 9 * * 1-5',
+    catchup=True,
     tags=['p03']
 
 ) as dag:
