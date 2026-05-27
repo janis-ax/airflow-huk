@@ -15,7 +15,7 @@ with DAG(
     def produce_data():
         return {'user': 'ish', 'score': 42}
     @task
-    def consume_datad(d):
+    def consume_data(d):
         print(f'User {d["user"]} hat den score {d["score"]}')
 
     def log_date():
