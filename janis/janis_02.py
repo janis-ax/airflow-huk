@@ -3,7 +3,7 @@ from __future__ import annotations
 import pendulum
 from airflow.decorators import dag, task
 from airflow.operators.bash import BashOperator
-from libs.calculator import add, subtract, multiply, divide
+from janis.libs.calculator import add, subtract, multiply, divide
 
 @dag(
     dag_id="janis_calculator",
