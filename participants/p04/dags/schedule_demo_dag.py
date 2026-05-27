@@ -9,7 +9,7 @@ from airflow.operators.bash import BashOperator
     dag_id="p04_schedule_demo_dag",
     start_date=pendulum.now().subtract(days=7),
     schedule="@hourly",
-    catchup=False,
+    catchup=True,
     tags=["p04"],
 )
 def schedule_demo_dag():

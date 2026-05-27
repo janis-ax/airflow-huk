@@ -53,6 +53,7 @@ start >> process >> end
 
 * Ändere `catchup` auf `True` und reaktiviere den DAG
 * Beobachte im Grid View: Wie viele historische Runs werden nachgeholt?
+0
 
 **Teilaufgabe 3: Cron-Ausdruck einsetzen**
 
