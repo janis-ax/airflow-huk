@@ -6,7 +6,7 @@ with DAG(
     dag_id="p05_hello_world",
     start_date=datetime(2027, 5, 20),
     schedule='@hourly',
-    catchup=False,
+    catchup=True,
     tags=["workshop", "p05"],
 ) as dag:
     BashOperator(
