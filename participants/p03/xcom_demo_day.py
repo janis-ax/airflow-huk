@@ -21,4 +21,4 @@ with DAG(
     def log_date():
         return BashOperator(task_id='log_date', bash_command='echo "Run {{logical_date | ds }}"')
 
-    produce_data >> consume_data >> log_date
+    produce_data >> consume_data >> log_date()
