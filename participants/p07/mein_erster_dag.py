@@ -1,5 +1,5 @@
-from airflow.sdk import DAG
-from airflow.providers.standard.operators.bash import BashOperator
+from airflow import DAG
+from airflow.operators.bash import BashOperator
 
 @task(task_id="process_task")
 def process():
@@ -17,7 +17,7 @@ with DAG(
         bash_command='echo "Start"'
     )
 
-    process_task = process()
+    # process_task = process()
 
     end_task = BashOperator(
         task_id="end_task",
