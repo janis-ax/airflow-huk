@@ -1,6 +1,6 @@
 from airflow import DAG
-from airflow.decorators import dag, task
-from airflow.operators.bash import BashOperator
+from airflow.sdk import dag, task
+from airflow.providers.standard.operators.bash import BashOperator
 import pendulum
 
 
@@ -21,6 +21,7 @@ def mein_zweiter_dag():
 
     @task(task_id="consume_data")
     def consume_data(ti):
+        print('Test')
         print(ti)
         user = ti.xcom_pull(task_ids="produce_data", key="user")
         score = ti.xcom_pull(task_ids="produce_data", key="score")
