@@ -11,7 +11,7 @@ import pendulum
     schedule=None,
     catchup=False,
     tags=["p07", "workshop", "task2"],
-    params
+    params={'country', 'DE'}
 )
 def mein_zweiter_dag():
 
