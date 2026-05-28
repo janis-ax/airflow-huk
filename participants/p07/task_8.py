@@ -22,7 +22,7 @@ def mein_zweiter_dag():
 
     build_path = BashOperator(
         task_id="build_path_p07",
-        bash_command='echo "/data/{{ logical_date | ds }}/{{ ti.xcom_pull(task_ids='read_country_p07') }}/input.csv"'
+        bash_command='echo "/data/{{ logical_date | ds }}/{{ ti.xcom_pull(task_ids=\'read_country_p07\') }}/input.csv"'
     )
 
     final_log = BashOperator(
