@@ -314,3 +314,74 @@ start >> [chunk_1, chunk_2, chunk_3] >> finish
 *(Optional Bonus später: Dynamic Task Mapping für beliebig viele Chunks.)*
 
 ---
+
+# Wiederholung Tag 1
+
+## Aufgabe 17 – Wiederholung: Wetter-Pipeline
+
+**Datei:** `dags/wetter_pipeline_dag.py`
+**Ziel:** DAG-Grundlagen, Scheduling, XCom und Templates in einer einfachen Pipeline kombinieren.
+
+**DAG:**
+
+* `dag_id`: `wetter_pipeline`
+* `schedule`: `0 8 * * *` (taeglich um 08:00)
+* `start_date`: `2024-01-01`
+* `catchup`: `False`
+* `params`: `{ "city": "Berlin" }`
+
+**Tasks:**
+
+* `fetch_temperature` (TaskFlow): gibt ein Dict zurueck: `{"city": params.city, "temp": 22.5, "date": str(data_interval_end)}`
+* `check_temperature` (TaskFlow): liest das Dict per XCom, gibt `"warm"` zurueck wenn `temp >= 20`, sonst `"kalt"`
+* `log_result` (BashOperator):
+
+  ```bash
+  echo "{{ logical_date | ds }}: {{ ti.xcom_pull(task_ids='check_temperature') }}"
+  ```
+
+**Dependencies:**
+
+```python
+fetch_temperature >> check_temperature >> log_result
+```
+
+**Schritte:**
+
+1. DAG deployen und manuell triggern
+2. XCom-Werte im UI pruefen (Admin > XCom)
+3. Nochmal triggern mit Conf: `{"city": "Hamburg"}`
+4. Logs beider Runs vergleichen
+
+---
+
+## Aufgabe 18 – Wiederholung: Parallele Datenverarbeitung
+
+**Datei:** `dags/parallel_processing_dag.py`
+**Ziel:** Orchestrierung, Trigger Rules und Pools wiederholen.
+
+**Voraussetzung:** Pool `verarbeitung_pool` mit 2 Slots anlegen (Admin > Pools)
+
+**Tasks:**
+
+* `start` (EmptyOperator)
+* `laden_csv` (Python): `print("CSV geladen")`, `pool='verarbeitung_pool'`
+* `laden_json` (Python): `print("JSON geladen")`, `pool='verarbeitung_pool'`
+* `laden_xml` (Python): `print("XML geladen")`, `pool='verarbeitung_pool'`
+* `zusammenfuehren` (Python): `print("Alle Quellen zusammengefuehrt")`, `trigger_rule='all_done'`
+* `report` (BashOperator): `echo "Report erstellt am {{ logical_date | ds }}"`
+
+**Dependencies:**
+
+```python
+start >> [laden_csv, laden_json, laden_xml] >> zusammenfuehren >> report
+```
+
+**Schritte:**
+
+1. DAG deployen und triggern
+2. Im Gantt View pruefen: Laufen wirklich nur 2 Lade-Tasks gleichzeitig?
+3. Einen Lade-Task absichtlich fehlschlagen lassen (`raise Exception`)
+4. Beobachten: Laeuft `zusammenfuehren` trotzdem durch? (Warum?)
+
+---
