@@ -17,7 +17,7 @@ from airflow.sdk import Param
 
 
 @dag(
-    dag_id="content_review_workflow",
+    dag_id="p05_content_review_workflow",
     start_date=datetime(2024, 1, 1),
     schedule=None,
     catchup=False,
