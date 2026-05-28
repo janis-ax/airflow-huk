@@ -11,7 +11,7 @@ import pendulum
     schedule=None,
     catchup=False,
     tags=["p07", "workshop", "task2"],
-    params={'country', 'DE'}
+    params={"country": "DE"}
 )
 def mein_dritter_dag():
 
