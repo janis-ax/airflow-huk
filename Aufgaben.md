@@ -385,3 +385,59 @@ start >> [laden_csv, laden_json, laden_xml] >> zusammenfuehren >> report
 4. Beobachten: Laeuft `zusammenfuehren` trotzdem durch? (Warum?)
 
 ---
+
+## Aufgabe 19 – Content Review Workflow (HITL)
+
+**Datei:** `dags/content_review_workflow_dag.py`
+**Ziel:** Human-in-the-Loop Workflow mit allen HITL-Operatoren kombinieren.
+**Voraussetzung:** Airflow 3.1+
+
+Erstellen Sie einen Content Review Workflow mit folgenden Schritten:
+
+1. **HITLEntryOperator:** Benutzer gibt einen Textentwurf und die Zielgruppe ein
+2. **Verarbeitungs-Task:** Eingabe per XCom weitergeben und z.B. eine Zusammenfassung generieren
+3. **ApprovalOperator:** Reviewer genehmigt oder lehnt den Text ab
+4. **HITLBranchOperator:** Bei Genehmigung wird veroeffentlicht, sonst ueberarbeitet
+
+**Anforderungen:**
+
+* `dag_id`: `content_review_workflow`
+* `schedule`: `None`
+* `catchup`: `False`
+* Nutzen Sie **Jinja Templates** im `body` des `ApprovalOperator`, um die Eingabe anzuzeigen
+* Setzen Sie einen **Timeout von 30 Minuten** (`execution_timeout=timedelta(minutes=30)`)
+* Konfigurieren Sie **`assigned_users`** fuer den Reviewer
+* Nutzen Sie **XCom**, um Daten zwischen Tasks weiterzugeben
+
+**Tasks:**
+
+* `content_eingabe` (HITLEntryOperator) – Params: `text_entwurf`, `zielgruppe`
+* `zusammenfassung_erstellen` (TaskFlow) – liest HITL-Eingabe, gibt Dict per XCom zurueck
+* `content_genehmigung` (ApprovalOperator) – zeigt Text, Zielgruppe und Zusammenfassung im Body
+* `verzweigung` (HITLBranchOperator) – Optionen: `veroeffentlichen`, `ueberarbeiten`
+* `veroeffentlichen` (TaskFlow) – simuliert Veroeffentlichung
+* `ueberarbeiten` (TaskFlow) – simuliert Ueberarbeitung
+* `bei_ablehnung_ueberarbeiten` (TaskFlow, `trigger_rule='all_done'`) – faengt Ablehnung ab
+
+**Dependencies:**
+
+```python
+zusammenfassung_erstellen >> content_genehmigung >> verzweigung
+verzweigung >> [veroeffentlichen, ueberarbeiten]
+content_genehmigung >> bei_ablehnung_ueberarbeiten
+```
+
+**Schritte:**
+
+1. DAG deployen und manuell triggern
+2. Unter **Browse > Required Actions** die offene Aktion finden
+3. Textentwurf und Zielgruppe eingeben und absenden
+4. Im Task `content_genehmigung` den generierten Content pruefen und genehmigen/ablehnen
+5. Bei Genehmigung im Task `verzweigung` die naechste Aktion waehlen
+6. XCom-Werte der Tasks im UI pruefen
+
+**Hinweis:** Der `ApprovalOperator` ueberspringt bei `Reject` alle direkt nachfolgenden Tasks.
+Daher wird ein zusaetzlicher Task mit `trigger_rule='all_done'` benoetigt, um die
+Ueberarbeitung bei Ablehnung auszufuehren.
+
+---
