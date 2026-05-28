@@ -17,7 +17,7 @@ from airflow.operators.empty import EmptyOperator
     start_date=datetime(2024, 1, 1),
     schedule=None,
     catchup=False,
-    tags=["workshop", "wiederholung", "pools", "trigger_rules"],
+    tags=["workshop", "wiederholung", "pools", "trigger_rules", "p05"],
 )
 def parallel_processing():
 
