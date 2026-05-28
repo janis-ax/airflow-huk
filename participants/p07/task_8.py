@@ -11,12 +11,13 @@ import pendulum
     schedule=None,
     catchup=False,
     tags=["p07", "workshop", "task2"],
-    params={"country", "DE"}
+    params={"country": "DE"}
 )
 def mein_dritter_dag():
 
     @task(task_id="read_country_p07")
-    def read_country(**ctx):
+    def read_country():
+        ctx = get_current_context()
         return ctx["params"]["country"]
 
     build_path = BashOperator(
