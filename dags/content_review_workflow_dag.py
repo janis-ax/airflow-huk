@@ -14,7 +14,6 @@ from airflow.providers.standard.operators.hitl import (
     HITLEntryOperator,
 )
 from airflow.sdk import Param
-from airflow.sdk.execution_time.hitl import HITLUser
 
 
 @dag(
@@ -78,9 +77,6 @@ def content_review_workflow():
 
 Bitte genehmigen oder ablehnen.""",
         execution_timeout=timedelta(minutes=30),
-        assigned_users=[
-            HITLUser(id="airflow", name="Airflow"),
-        ],
         params={
             "review_kommentar": Param(
                 "",
