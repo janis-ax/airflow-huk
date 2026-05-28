@@ -3,7 +3,8 @@ Aufgabe 17: Wetter-Pipeline
 Wiederholung: DAG-Grundlagen, Scheduling, XCom, Templates und Params.
 """
 
-from datetime import datetime
+
+from datetime import datetime, timedelta
 
 from airflow.decorators import dag, task
 from airflow.operators.bash import BashOperator
