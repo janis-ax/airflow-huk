@@ -11,7 +11,7 @@ import pendulum
     schedule=None,
     catchup=False,
     tags=["p07", "workshop", "task2"],
-    params
+    params={'country', 'DE'}
 )
 def mein_zweiter_dag():
 
@@ -22,12 +22,12 @@ def mein_zweiter_dag():
 
     build_path = BashOperator(
         task_id="build_path_p07",
-        bash_command='echo "/data/{{ logical_date | ds }}/{{ ti.xcom_pull(task_ids='read_country_p07') }}/input.csv"'
+        bash_command='echo "/data/{{ logical_date | ds }}/{{ ti.xcom_pull(task_ids=\'read_country_p07\') }}/input.csv"'
     )
 
     final_log = BashOperator(
         task_id="final_log_p07",
-        bash_command='echo "Done for {{ (dag_run.conf or {}).get('country', params.country) }}"'
+        bash_command='echo "Done for {{ (dag_run.conf or {}).get(\'country\', params.country) }}"'
     )
 
     read_country() >> build_path >> final_log
