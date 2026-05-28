@@ -21,8 +21,7 @@ def xcom_demo_dag():
     def consume_data(**context):
         data = context["ti"].xcom_pull(task_ids='produce_data')
         print(data)
-        print(data.keys())
-        print(f"User {data["user"]} hat Score {data["score"]}")
+        print(f"User {data['user']} hat Score {data['score']}")
 
     @task
     def log_date():
