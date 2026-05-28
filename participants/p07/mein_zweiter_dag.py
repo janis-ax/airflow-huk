@@ -15,19 +15,17 @@ import pendulum
 )
 def mein_zweiter_dag():
 
-    @task(task_id="produce_data")
+    @task(task_id="produce_data_p07")
     def produce_data():
         return {"user": "ish", "score": 42}
 
-    @task(task_id="consume_data")
-    def consume_data(**inp):
-        print(inp)
-        #user = data["user"]
-        #score = data["score"]
-        #print(f"User {user} has score {score}")
+    @task(task_id="consume_data_p07")
+    def consume_data(**context):
+        data = context["ti"].xcom_pull(task_ids="produce_data_p07")
+        print(f"User {data.user} has score {data.score}")
 
     log_date = BashOperator(
-        task_id="log_date",
+        task_id="log_date_p07",
         bash_command='echo "Processing date {{ logical_date | ds }} ({{ data_interval_start }} - {{ data_interval_end }})"'
     )
 

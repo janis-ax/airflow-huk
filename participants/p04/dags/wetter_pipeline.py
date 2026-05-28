@@ -10,12 +10,12 @@ from airflow.operators.bash import BashOperator
 
 
 @dag(
-    dag_id="p03_wetter_pipeline",
+    dag_id="p04_wetter_pipeline",
     start_date=datetime(2024, 1, 1),
     schedule="0 8 * * *",
     catchup=False,
     params={"city": "Berlin"},
-    tags=["workshop", "wiederholung", "xcom", "p03"],
+    tags=["p04"],
 )
 def wetter_pipeline():
 
@@ -34,8 +34,9 @@ def wetter_pipeline():
         return result
 
     @task
-    def check_temperature(weather_data):
+    def check_temperature(**context):
         """Prueft ob die Temperatur warm oder kalt ist."""
+        weather_data = context["ti"].xcom_pull(task_ids='fetch_temperature')
         temp = weather_data["temp"]
         city = weather_data["city"]
 
@@ -47,10 +48,7 @@ def wetter_pipeline():
         print(f"{city}: {temp} Grad = {bewertung}")
         return bewertung
 
-    weather = fetch_temperature()
-    bewertung = check_temperature(weather)
-
-    log_result=BashOperator(
+    BashOperator(
         task_id="log_result",
         bash_command=(
             'echo "{{ logical_date | ds }}: '
@@ -58,7 +56,7 @@ def wetter_pipeline():
         ),
     )
 
-    weather >> bewertung >> log_result
+    fetch_temperature >> check_temperature >> log_result
 
 
 wetter_pipeline()
