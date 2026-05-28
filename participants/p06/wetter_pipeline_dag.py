@@ -7,6 +7,12 @@ from datetime import datetime
 
 from airflow.decorators import dag, task
 from airflow.operators.bash import BashOperator
+from airflow.providers.standard.operators.hitl import (
+    ApprovalOperator,
+    HITLBranchOperator,
+    HITLEntryOperator,
+)
+from airflow.sdk import Param
 
 
 @dag(
