@@ -19,6 +19,6 @@ with DAG(
         print(f'User {d["user"]} hat den score {d["score"]}')
 
     def log_date():
-        BashOperator(task_id='log_date', bash_command='echo "Run {{logical_date | ds }}"')
+        return BashOperator(task_id='log_date', bash_command='echo "Run {{logical_date | ds }}"')
 
     consume_data(produce_data()) >> log_date()
