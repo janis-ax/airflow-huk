@@ -30,7 +30,7 @@ def mein_zweiter_dag():
         task_id="log_date",
         bash_command='echo "Processing date {{ logical_date | ds }} ({{ data_interval_start }} - {{ data_interval_end }})"'
     )
-    data = produce_data()
-    consume_data(data) >> log_date
+
+    produce_data() >> consume_data() >> log_date
 
 dag = mein_zweiter_dag()
