@@ -48,7 +48,7 @@ def wetter_pipeline():
         print(f"{city}: {temp} Grad = {bewertung}")
         return bewertung
 
-    BashOperator(
+    log_result = BashOperator(
         task_id="log_result",
         bash_command=(
             'echo "{{ logical_date | ds }}: '
@@ -56,7 +56,7 @@ def wetter_pipeline():
         ),
     )
 
-    fetch_temperature >> check_temperature >> log_result
+    fetch_temperature() >> check_temperature() >> log_result
 
 
 wetter_pipeline()
