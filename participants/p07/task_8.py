@@ -22,7 +22,12 @@ def mein_dritter_dag():
 
     build_path = BashOperator(
         task_id="build_path_p07",
-        bash_command="echo {{ ti.xcom_pull(task_ids=\'read_country_p07\') }}"
+        bash_command="echo '/data/{{ logical_date | ds }}/{{ ti.xcom_pull(task_ids=\'read_country_p07\') }}/input.csv"
+    )
+
+    build_path = BashOperator(
+        task_id="build_path_p07",
+        bash_command="echo "
     )
 
 
