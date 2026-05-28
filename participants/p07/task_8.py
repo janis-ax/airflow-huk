@@ -27,7 +27,7 @@ def mein_zweiter_dag():
 
     final_log = BashOperator(
         task_id="final_log_p07",
-        bash_command='echo "Done for {{ (dag_run.conf or {}).get('country', params.country) }}"'
+        bash_command='echo "Done for {{ (dag_run.conf or {}).get(\'country\', params.country) }}"'
     )
 
     read_country() >> build_path >> final_log
