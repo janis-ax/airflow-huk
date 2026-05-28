@@ -406,7 +406,7 @@ Erstellen Sie einen Content Review Workflow mit folgenden Schritten:
 * `catchup`: `False`
 * Nutzen Sie **Jinja Templates** im `body` des `ApprovalOperator`, um die Eingabe anzuzeigen
 * Setzen Sie einen **Timeout von 30 Minuten** (`execution_timeout=timedelta(minutes=30)`)
-* Konfigurieren Sie **`assigned_users`** fuer den Reviewer
+* **`assigned_users` weglassen**, damit alle berechtigten User antworten koennen
 * Nutzen Sie **XCom**, um Daten zwischen Tasks weiterzugeben
 
 **Tasks:**

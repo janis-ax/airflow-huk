@@ -14,14 +14,15 @@ from airflow.providers.standard.operators.hitl import (
     HITLEntryOperator,
 )
 from airflow.sdk import Param
+from airflow.sdk.execution_time.hitl import HITLUser
 
 
 @dag(
-    dag_id="content_review_workflow",
+    dag_id="p03_content_review_workflow",
     start_date=datetime(2024, 1, 1),
     schedule=None,
     catchup=False,
-    tags=["workshop", "hitl", "content-review"],
+    tags=["workshop", "hitl", "content-review", "p03"],
 )
 def content_review_workflow():
     content_eingabe = HITLEntryOperator(
@@ -77,6 +78,9 @@ def content_review_workflow():
 
 Bitte genehmigen oder ablehnen.""",
         execution_timeout=timedelta(minutes=30),
+        assigned_users=[
+            HITLUser(id="airflow", name="Airflow"),
+        ],
         params={
             "review_kommentar": Param(
                 "",
