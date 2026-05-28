@@ -13,7 +13,7 @@ import pendulum
     tags=["p07", "workshop", "task2"],
     params={'country', 'DE'}
 )
-def mein_zweiter_dag():
+def mein_dritter_dag():
 
     @task(task_id="read_country_p07")
     def read_country():
