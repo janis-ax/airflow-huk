@@ -16,8 +16,7 @@ import pendulum
 def mein_dritter_dag():
 
     @task(task_id="read_country_p07")
-    def read_country():
-        ctx = get_current_context()
+    def read_country(**ctx):
         return ctx["params"]["country"]
 
     build_path = BashOperator(
