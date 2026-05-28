@@ -22,7 +22,6 @@ def mein_zweiter_dag():
     @task(task_id="consume_data_p07")
     def consume_data(**context):
         data = context["ti"].xcom_pull(task_ids="produce_data_p07")
-        print(data)
         print(f"User {data['user']} has score {data['score']}")
 
     log_date = BashOperator(
