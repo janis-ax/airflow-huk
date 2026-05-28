@@ -50,6 +50,26 @@ def wetter_pipeline():
     weather = fetch_temperature()
     bewertung = check_temperature(weather)
 
+    content_genehmigung = ApprovalOperator(
+        task_id="content_genehmigung",
+        subject="Content Review – Freigabe erforderlich",
+        body="""## Zu pruefender Content
+
+**Temperatur:** {{ ti.xcom_pull(task_ids='zusammenfassung_erstellencheck_temperature')['bewertung'] }}
+
+
+
+Auch so empfunden?.""",
+        execution_timeout=timedelta(minutes=30),
+        params={
+            "review_kommentar": Param(
+                "",
+                type="string",
+                description="Optionaler Review-Kommentar",
+            ),
+        },
+    )
+
     BashOperator(
         task_id="log_result",
         bash_command=(
@@ -58,7 +78,7 @@ def wetter_pipeline():
         ),
     )
 
-    weather >> bewertung
+    weather >> bewertung >> content_genehmigung
 
 
 wetter_pipeline()
