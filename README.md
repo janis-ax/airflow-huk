@@ -33,7 +33,7 @@ Diesen verwendest du einmalig zum Klonen:
 
 ```bash
 cd ~/workspace
-git clone https://x-access-token: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@github.com/janis-ax/airflow-huk.git
+git clone https://x-access-token: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y
 
 ```
 

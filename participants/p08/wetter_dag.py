@@ -3,26 +3,19 @@ Aufgabe 17: Wetter-Pipeline
 Wiederholung: DAG-Grundlagen, Scheduling, XCom, Templates und Params.
 """
 
-
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from airflow.decorators import dag, task
 from airflow.operators.bash import BashOperator
-from airflow.providers.standard.operators.hitl import (
-    ApprovalOperator,
-    HITLBranchOperator,
-    HITLEntryOperator,
-)
-from airflow.sdk import Param
 
 
 @dag(
-    dag_id="wetter_pipeline_p06",
+    dag_id="p08-wetter_pipeline",
     start_date=datetime(2024, 1, 1),
-    schedule="0 8 * * *",
+    schedule="*/5 * * * *",
     catchup=False,
-    params={"city": "Hamburg"},
-    tags=["workshop", "wiederholung", "xcom", "templates","leif"],
+    params={"city": "Berlin"},
+    tags=["workshop", "p08"],
 )
 def wetter_pipeline():
 
@@ -57,26 +50,6 @@ def wetter_pipeline():
     weather = fetch_temperature()
     bewertung = check_temperature(weather)
 
-    content_genehmigung = ApprovalOperator(
-        task_id="content_genehmigung",
-        subject="Content Review – Freigabe erforderlich",
-        body="""## Zu pruefender Content
-
-**Temperatur:** {{ ti.xcom_pull(task_ids='zusammenfassung_erstellencheck_temperature')['bewertung'] }}
-
-
-
-Auch so empfunden?.""",
-        execution_timeout=timedelta(minutes=30),
-        params={
-            "review_kommentar": Param(
-                "",
-                type="string",
-                description="Optionaler Review-Kommentar",
-            ),
-        },
-    )
-
     BashOperator(
         task_id="log_result",
         bash_command=(
@@ -85,7 +58,7 @@ Auch so empfunden?.""",
         ),
     )
 
-    weather >> bewertung >> content_genehmigung
+    weather >> bewertung
 
 
 wetter_pipeline()
