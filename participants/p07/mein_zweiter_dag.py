@@ -20,16 +20,15 @@ def mein_zweiter_dag():
         return {"user": "ish", "score": 42}
 
     @task(task_id="consume_data")
-    def consume_data(data):
-        print('Test')
-        print(data)
-        user = data["user"]
-        score = data["score"]
-        print(f"User {user} has score {score}")
+    def consume_data(**inp):
+        print(inp)
+        #user = data["user"]
+        #score = data["score"]
+        #print(f"User {user} has score {score}")
 
     log_date = BashOperator(
         task_id="log_date",
-        bash_command='echo "Run {{ logical_date | ds }}"'
+        bash_command='echo "Processing date {{ logical_date | ds }} ({{ data_interval_start }} - {{ data_interval_end }})"'
     )
     data = produce_data()
     consume_data(data) >> log_date
