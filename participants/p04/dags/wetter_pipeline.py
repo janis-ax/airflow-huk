@@ -56,7 +56,7 @@ def wetter_pipeline():
         ),
     )
 
-    fetch_temperature >> check_temperature >> log_result
+    fetch_temperature() >> check_temperature() >> log_result
 
 
 wetter_pipeline()
