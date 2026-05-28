@@ -1,6 +1,6 @@
 from airflow import DAG
-from airflow.decorators import dag, task
-from airflow.operators.bash import BashOperator
+from airflow.sdk import dag, task
+from airflow.providers.standard.operators.bash import BashOperator
 import pendulum
 
 
@@ -9,28 +9,29 @@ import pendulum
 @dag(
     dag_id="p07_mein_zweiter_dag",
     start_date=pendulum.datetime(2026, 5, 20, tz="UTC"),  # timezone-aware
-    schedule="@hourly",
-    catchup=True,
+    schedule="@once",
+    catchup=False,
     tags=["p07", "workshop", "task2"],
 )
-def mein_erster_dag():
+def mein_zweiter_dag():
 
-    @task(task_id="produce_data", do_xcom_push=True)
+    @task(task_id="produce_data")
     def produce_data():
         return {"user": "ish", "score": 42}
 
-    @task(task_id="consume_data", do_xcom_push=True)
-    def consume_data():
-        raise Exception
+    @task(task_id="consume_data")
+    def consume_data(data):
+        print('Test')
+        print(data)
+        user = data["user"]
+        score = data["score"]
+        print(f"User {user} has score {score}")
 
-    @task(task_id="log_date")
-    def log_date():
-        raise Exception
-
-    produce_data() >> consume_data() >> log_date()
-
-
+    log_date = BashOperator(
+        task_id="log_date",
+        bash_command='echo "Run {{ logical_date | ds }}"'
+    )
+    data = produce_data()
+    consume_data(data) >> log_date
 
 dag = mein_zweiter_dag()
-
-
