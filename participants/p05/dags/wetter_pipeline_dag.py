@@ -15,7 +15,7 @@ from airflow.operators.bash import BashOperator
     schedule="0 8 * * *",
     catchup=False,
     params={"city": "Berlin"},
-    tags=["workshop", "wiederholung", "xcom", "templates"],
+    tags=["workshop", "wiederholung", "xcom", "templates", "p05"],
 )
 def wetter_pipeline():
 
