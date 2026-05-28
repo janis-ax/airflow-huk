@@ -79,7 +79,7 @@ def content_review_workflow():
 Bitte genehmigen oder ablehnen.""",
         execution_timeout=timedelta(minutes=30),
         assigned_users=[
-            HITLUser(id="reviewer", name="Content Reviewer"),
+            HITLUser(id="airflow", name="Airflow"),
         ],
         params={
             "review_kommentar": Param(
