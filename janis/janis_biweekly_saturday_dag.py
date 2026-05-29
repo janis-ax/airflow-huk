@@ -4,6 +4,7 @@ import pendulum
 from airflow.decorators import dag, task
 from airflow.operators.bash import BashOperator
 
+# Import aus dem gleichen Ordner (janis/ liegt beim DAG-Parsen auf sys.path).
 from biweekly_saturday_timetable import OddWeekSaturday9amTimetable
 
 
